@@ -1,7 +1,9 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
-
+const title = $('#taskTitle');
+const dueDate = $('#dueDate');
+const description = $('#description');
 // modal script for buttons and modal
 const modal = $('.modal');
 const exitButton = $('.close');
@@ -92,12 +94,33 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
-
+        event.preventDefault();
+        const taskTitle = title.val().trim();
+        const taskDue = dueDate.val();
+        const taskDescription = description.val();
+        const newTask = {
+            name: taskTitle,
+            type: taskDue,
+            dueDate: taskDescription,
+            status: 'to-do',
+          };
+        
+          const tasks = storeTasks();
+          tasks.push(newTask);
+        
+          storeTasks(tasks);
+        
+          renderTaskList();
+        
+          title.val('');
+          dueDate.val('');
+          description.val('');
+        }
 }
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-
+const del = 
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
