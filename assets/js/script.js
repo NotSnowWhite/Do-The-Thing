@@ -3,21 +3,21 @@ let taskList = JSON.parse(localStorage.getItem("tasks"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // modal script for buttons and modal
-const modal = document.getElementsByClassName('.modal');
-const exitButton = document.getElementsByClassName('close');
-const modalButton = document.getElementsByClassName('btn');
+const modal = $('.modal');
+const exitButton = $('.close');
+const modalButton = $('.btn');
 
 
 // makes exit button remove modal
-exitButton.onclick = function () {
-    modal.style.display = 'none';
-}
+exitButton.click(function () {
+    modal.hide();
+});
 
 // function to call form on submit 
 const form = document.querySelector('Form');
 form.addEventListener('submit', function (event) {
     event.preventDefault();
-    const taskTitle = document.getElementById('taskTitle').val();
+    const taskTitle = $('#taskTitle').val();
     console.log(taskTitle);
     modal.style.display = 'none'
 });
@@ -57,8 +57,10 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+        $( "#draggable" ).draggable();
+        zIndex: 100,
+      };
 
-}
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {

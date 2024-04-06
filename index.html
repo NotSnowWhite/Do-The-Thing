@@ -26,31 +26,31 @@
     </div>
     <!-- Todo: Create a modal with a form to add tasks -->
     <!-- modal form -->
-    <div class="modal" id="formModal">
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="card-header">
-        <h2>Add Tasks Here</h2>
-        <!-- x button to close modal -->
-        <span type='button' class="close">&times;</span>
+        <div class="modal-header ">
+          <h2>Add Tasks Here</h2>
+          <!-- x button to close modal -->
+          <span type='button' class="close">&times;</span>
         </div>
-        <div>
-        <form>
-          <label for="taskTitle">Task Title</label>
-          <input type="text" id="taskTitle" name="taskTitle">
+        <div class="modal-body">
+          <form id="taskForm">
 
-          <!-- date picker -->
-          <label for="dueDate">Due Date</label>
-          <input type="date" id="dueDate" name="dueDate">
+            <label for="taskTitle">Task Title</label>
+            <input type="text" id="taskTitle" name="taskTitle">
 
-          <label for="description">Description</label>
-          <input type="text" id="description" name="description">
-          <div class="card-footer">
-            <button type="submit" class="btn btn-custom">
-              Add Project
-            </button>
-          </div>
-        </form>
+            <!-- date picker -->
+            <label for="dueDate">Due Date</label>
+            <input type="date" id="dueDate" name="dueDate">
+
+            <label for="description">Description</label>
+            <input type="text" id="description" name="description">
+
+            <button type="submit" class="btn btn-custom">Add Project</button>
+          </form>
         </div>
+      </div>
       </div>
     </div>
 
