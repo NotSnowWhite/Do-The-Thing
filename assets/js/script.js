@@ -16,21 +16,42 @@ exitButton.onclick = function () {
 // function to call form on submit 
 const form = document.querySelector('Form');
 form.addEventListener('submit', function (event) {
-  event.preventDefault();
-  const taskTitle = document.getElementById('taskTitle').val();
-  console.log(taskTitle);
-  modal.style.display = 'none';
+    event.preventDefault();
+    const taskTitle = document.getElementById('taskTitle').val();
+    console.log(taskTitle);
+    modal.style.display = 'none'
 });
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-const randomNum = Math.floor(Math.random() * 1001);
-return randomNum;
+    const randomNum = Math.floor(Math.random() * 1001);
+    return randomNum;
 }
-
-console.log(generateTaskId())
+id = generateTaskId();
+console.log(id);
 // Todo: create a function to create a task card
 function createTaskCard(task) {
+    const taskCard = $('<div>').addClass('card project-card draggable my-3').attr('data-task-id', task.id);
+    const cardTitle = $('<div>').addClass('card-title h4').text(task.name);
+    const cardBody = $('<div>').addClass('card-body');
+    const cardDescription = $('<p>').addClass('card-description').text(task.type);
+    const cardDueDate = $('<p>').addClass('card-duedate').text(task.dueDate);
+
+    if (task.dueDate && task.status !== 'done') {
+        const now = dayjs();
+        const taskDueDate = dayjs(task.dueDate, 'DD/MM/YYYY');
+
+        if (now.isSame(taskDueDate, 'day')) {
+            taskCard.addClass('bg-warning text-white');
+        } else if (now.isAfter(taskDueDate)) {
+            taskCard.addClass('bg-danger text-white');
+        }
+    }
+
+    cardBody.append(cardDescription, cardDueDate);
+    taskCard.append(cardTitle, cardBody);
+
+    return taskCard;
 
 }
 
@@ -40,12 +61,12 @@ function renderTaskList() {
 }
 
 // Todo: create a function to handle adding a new task
-function handleAddTask(event){
+function handleAddTask(event) {
 
 }
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event){
+function handleDeleteTask(event) {
 
 }
 
