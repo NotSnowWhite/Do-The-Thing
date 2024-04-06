@@ -57,7 +57,7 @@ function createTaskCard(task) {
 
 }
 
-function storeTasks() {
+function readTasks() {
     let tasks = JSON.parse(localStorage.getItem('tasks'));
       if (!tasks) {
       tasks = [];
@@ -65,8 +65,13 @@ function storeTasks() {
   
     return tasks;
   }
+  
+  function storeTasks(tasks) {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+    const readTasks();
     const todoList = $('#todo-cards');
     todoList.empty();
   
@@ -86,7 +91,7 @@ function renderTaskList() {
         }
       }
 
-    const tasks = storeTasks()
+    const tasks = readTasks()
         $( "#draggable" ).draggable();
         zIndex: 100,
       };
@@ -105,7 +110,7 @@ function handleAddTask(event) {
             status: 'to-do',
           };
         
-          const tasks = storeTasks();
+          const tasks = readTasks();
           tasks.push(newTask);
         
           storeTasks(tasks);
@@ -116,12 +121,22 @@ function handleAddTask(event) {
           dueDate.val('');
           description.val('');
         }
-}
+
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-const del = 
-}
+const tasks = readTasks(); 
+    const taskId = $(this).attr('data-task-id');
+  
+    tasks.forEach((tasks) => {
+      if (tasks.id === taskId) {
+        tasks.splice(tasks.indexOf(tasks), 1);
+      }
+    });
+  
+    storeTasks(tasks);
+    renderTaskList();
+  }
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
