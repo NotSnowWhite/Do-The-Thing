@@ -4,6 +4,8 @@ let nextId = JSON.parse(localStorage.getItem("nextId"));
 const title = $('#taskTitle');
 const dueDate = $('#dueDate');
 const description = $('#description');
+const taskDisplay = $('#task-display');
+const formSub = $('form')
 // modal script for buttons and modal
 const modal = $('.modal');
 const exitButton = $('.close');
@@ -140,10 +142,35 @@ const tasks = readTasks();
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+    const tasks = storeTasks();
 
-}
+    const tasksId = ui.draggable[0].dataset.taskId;
+  
+    const newStatus = event.target.id;
+  
+    for (let tasks of tasks) {
+      if (tasks.id === taskId) {
+        tasks.status = newStatus;
+      }
+    }
+    localStorage.setItem('projects', JSON.stringify(projects));
+    printProjectData();
+  }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
-
+        renderTaskList();
+      
+        $('#dueDate').datepicker({
+          changeMonth: true,
+          changeYear: true,
+        });
+      
+        $('.lane').droppable({
+          accept: '.draggable',
+          drop: handleDrop,
+        });
 });
+
+taskDisplay.on('click', '.btn-delete-project', handleDeleteTask);
+formSub.on('submit', handleAddTask);
