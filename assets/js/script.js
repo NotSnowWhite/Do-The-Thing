@@ -31,10 +31,10 @@ id = generateTaskId();
 console.log(id);
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-    const taskCard = $('<div>').addClass('card project-card draggable my-3').attr('data-task-id', task.id);
-    const cardTitle = $('<div>').addClass('card-title h4').text(task.name);
+    const taskCard = $('<div>').addClass('card task-card draggable my-3').attr('data-task-id', task.id);
     const cardBody = $('<div>').addClass('card-body');
-    const cardDescription = $('<p>').addClass('card-description').text(task.type);
+    const cardTitle = $('<div>').addClass('card-title h4').text(task.name);
+    const cardDescription = $('<p>').addClass('card-description').text(task.title);
     const cardDueDate = $('<p>').addClass('card-duedate').text(task.dueDate);
 
     if (task.dueDate && task.status !== 'done') {
@@ -55,8 +55,36 @@ function createTaskCard(task) {
 
 }
 
+function storeTasks() {
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+      if (!tasks) {
+      tasks = [];
+    }
+  
+    return tasks;
+  }
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+    const todoList = $('#todo-cards');
+    todoList.empty();
+  
+    const inProgressList = $('#in-progress-cards');
+    inProgressList.empty();
+  
+    const doneList = $('#done-cards');
+    doneList.empty();
+
+    for (let tasks of tasks) {
+        if (tasks.status === 'to-do') {
+          todoList.append(createTaskCard(tasks));
+        } else if (tasks.status === 'in-progress') {
+          inProgressList.append(createTaskCard(tasks));
+        } else if (tasks.status === 'done') {
+          doneList.append(createTaskCard(tasks));
+        }
+      }
+
+    const tasks = storeTasks()
         $( "#draggable" ).draggable();
         zIndex: 100,
       };
