@@ -5,7 +5,7 @@ const title = $('#taskTitle');
 const dueDate = $('#dueDate');
 const description = $('#description');
 const taskDisplay = $('#task-display');
-const formSub = $('form')
+const formSub = $('#addProject')
 // modal script for buttons and modal
 const modal = $('.modal');
 const exitButton = $('.close');
@@ -73,8 +73,8 @@ function readTasks() {
   }
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-    const readTasks();
-    const todoList = $('#todo-cards');
+  const tasks = readTasks();
+  const todoList = $('#todo-cards');
     todoList.empty();
   
     const inProgressList = $('#in-progress-cards');
@@ -93,7 +93,6 @@ function renderTaskList() {
         }
       }
 
-    const tasks = readTasks()
         $( "#draggable" ).draggable();
         zIndex: 100,
       };
@@ -153,8 +152,8 @@ function handleDrop(event, ui) {
         tasks.status = newStatus;
       }
     }
-    localStorage.setItem('projects', JSON.stringify(projects));
-    printProjectData();
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTaskList();
   }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
@@ -172,5 +171,5 @@ $(document).ready(function () {
         });
 });
 
-taskDisplay.on('click', '.btn-delete-project', handleDeleteTask);
-formSub.on('submit', handleAddTask);
+taskDisplay.on('click', '.btn-delete-task', handleDeleteTask);
+formSub.on('click', handleAddTask);
