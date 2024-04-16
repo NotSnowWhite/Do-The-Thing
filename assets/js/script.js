@@ -1,6 +1,6 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
-let nextId = JSON.parse(localStorage.getItem("nextId")) || [];
+let taskList = JSON.parse(localStorage.getItem("tasks"));
+let nextId = JSON.parse(localStorage.getItem("nextId"));
 const title = $('#taskTitle');
 const dueDate = $('#dueDate');
 const description = $('#description');
@@ -18,10 +18,10 @@ exitButton.click(function () {
 });
 
 // function to call form on submit 
-const form = document.querySelector('Form');
-form.addEventListener('submit', function (event) {
+const form = $('#taskForm');
+form.on('submit', function (event) {
     event.preventDefault();
-    const taskTitle = $('#taskTitle').val();
+    const taskTitle = title.val();
     console.log(taskTitle);
     modal.style.display = 'none'
 });
@@ -60,12 +60,8 @@ function createTaskCard(task) {
 }
 
 function readTasks() {
-    let tasks = taskList;
-      if (!tasks) {
-      tasks = [];
-    }
-  
-    return tasks;
+    taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+    return taskList;
   }
   
   function storeTasks(tasks) {
@@ -75,12 +71,14 @@ function readTasks() {
 function renderTaskList() {
   const tasks = readTasks();
   const todoList = $('#todo-cards');
+  const inProgressList = $('#in-progress-cards');
+    const doneList = $('#done-cards');
+
     todoList.empty();
+
   
-    const inProgressList = $('#in-progress-cards');
     inProgressList.empty();
   
-    const doneList = $('#done-cards');
     doneList.empty();
 
     for (let task of tasks) {
@@ -93,10 +91,10 @@ function renderTaskList() {
         }
       }
 
-      $(".draggable").draggable({
-        zIndex: 100
-    });
-  }
+        $( ".draggable" ).draggable({
+        zIndex: 100,
+        });
+      }
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
@@ -105,6 +103,7 @@ function handleAddTask(event) {
         const taskDue = dueDate.val();
         const taskDescription = description.val();
         const newTask = {
+            id: generateTaskId(),
             name: taskTitle,
             type: taskDue,
             dueDate: taskDescription,
@@ -129,11 +128,12 @@ function handleDeleteTask(event) {
 const tasks = readTasks(); 
     const taskId = $(this).attr('data-task-id');
   
-    tasks.forEach((tasks) => {
-      if (tasks.id === taskId) {
-        tasks.splice(tasks.indexOf(tasks), 1);
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].id === taskId) {
+          tasks.splice(i, 1);
+          break;
       }
-    });
+    };
   
     storeTasks(tasks);
     renderTaskList();
@@ -141,19 +141,20 @@ const tasks = readTasks();
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    const tasks = storeTasks();
+  let tasks = readTasks();
+  const taskId = ui.draggable[0].dataset.taskId;
+  const newStatus = event.target.id;
 
-    const tasksId = ui.draggable[0].dataset.taskId;
-  
-    const newStatus = event.target.id;
-  
-    for (let task of tasks) {
-      if (task.id === tasksId) {
-        task.status = newStatus;
+  tasks = tasks.map(task => {
+      if (task.id === taskId) {
+          task.status = newStatus;
       }
-    }
+      return task;
+  });
+
+  storeTasks(tasks);
+  renderTaskList();
     localStorage.setItem('tasks', JSON.stringify(tasks));
-    renderTaskList();
   }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
