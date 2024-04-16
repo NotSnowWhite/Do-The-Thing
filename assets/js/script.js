@@ -1,6 +1,6 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
-let nextId = JSON.parse(localStorage.getItem("nextId"));
+let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
+let nextId = JSON.parse(localStorage.getItem("nextId")) || [];
 const title = $('#taskTitle');
 const dueDate = $('#dueDate');
 const description = $('#description');
@@ -60,7 +60,7 @@ function createTaskCard(task) {
 }
 
 function readTasks() {
-    let tasks = JSON.parse(localStorage.getItem('tasks'));
+    let tasks = taskList;
       if (!tasks) {
       tasks = [];
     }
@@ -83,20 +83,20 @@ function renderTaskList() {
     const doneList = $('#done-cards');
     doneList.empty();
 
-    for (let tasks of tasks) {
-        if (tasks.status === 'to-do') {
-          todoList.append(createTaskCard(tasks));
-        } else if (tasks.status === 'in-progress') {
-          inProgressList.append(createTaskCard(tasks));
-        } else if (tasks.status === 'done') {
-          doneList.append(createTaskCard(tasks));
+    for (let task of tasks) {
+        if (task.status === 'to-do') {
+          todoList.append(createTaskCard(task));
+        } else if (task.status === 'in-progress') {
+          inProgressList.append(createTaskCard(task));
+        } else if (task.status === 'done') {
+          doneList.append(createTaskCard(task));
         }
       }
 
-        $( "#draggable" ).draggable();
-        zIndex: 100,
-      };
-
+      $(".draggable").draggable({
+        zIndex: 100
+    });
+  }
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event) {
@@ -147,9 +147,9 @@ function handleDrop(event, ui) {
   
     const newStatus = event.target.id;
   
-    for (let tasks of tasks) {
-      if (tasks.id === taskId) {
-        tasks.status = newStatus;
+    for (let task of tasks) {
+      if (task.id === tasksId) {
+        task.status = newStatus;
       }
     }
     localStorage.setItem('tasks', JSON.stringify(tasks));
