@@ -1,8 +1,6 @@
 # Do-The-Thing
 The purpose of this repo is to house code for a to-do list and calendar. Track tasks and their due dates with ease.
 
-# My-Portfolio-Module-5
-
 ## Description
 After going to the URL, a user will see the kanban board. When clicking on add task button a purple and pink modal will appear for the user to input title, content, and date. Clicking outside of the modal or on the exit button in the top right corner will exit out of the modal. The created task cards are draggable and can be moved at the user's discretion.
 
